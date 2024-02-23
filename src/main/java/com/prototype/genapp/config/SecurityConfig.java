@@ -53,9 +53,12 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-				.authorizeHttpRequests((authorize) -> authorize.requestMatchers(HttpMethod.POST, "/customer/register")
-						.permitAll().requestMatchers(HttpMethod.POST, "/customer/login").permitAll()
+		http.cors().and()
+		.csrf().disable()
+				.authorizeHttpRequests((authorize) ->
+				authorize
+				.requestMatchers(HttpMethod.POST, "/customer/register").permitAll()
+				.requestMatchers(HttpMethod.POST, "/customer/login").permitAll()
 						.requestMatchers(HttpMethod.GET, "/customer/{customernumber}").authenticated()
 						.requestMatchers(HttpMethod.GET, "/customer").authenticated()
 						.requestMatchers(HttpMethod.PUT, "/customer/update/{customernumber}").authenticated()
