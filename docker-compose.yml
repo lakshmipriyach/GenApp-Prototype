@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: genappdb
+    networks:
+      - genapp-mysql-net
+
+  genapp:
+    container_name: genapp
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/genappdb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - APP_BASIC_AUTH_USERNAME=admin
+      - APP_BASIC_AUTH_PASSWORD=admin
+    depends_on:
+      - mysqldb
+    networks:
+      - genapp-mysql-net
+    restart: on-failure
+    
+networks:
+  genapp-mysql-net: 
