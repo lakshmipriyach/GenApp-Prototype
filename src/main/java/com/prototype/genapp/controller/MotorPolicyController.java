@@ -1,5 +1,7 @@
 package com.prototype.genapp.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +21,6 @@ import com.prototype.genapp.service.MotorPolicyService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 @RestController
 @RequestMapping("/motor")
@@ -42,6 +43,16 @@ public class MotorPolicyController {
 			@PathVariable int customerNumber) {
 		MotorPolicy motorPolicy = motorPolicyService.getMotorPolicy(policyNumber, customerNumber);
 		return ResponseEntity.ok(motorPolicy);
+	}
+
+	// Get All Policies
+	@ApiResponse(responseCode = "200", description = "Http Status 200 OK")
+	@SecurityRequirement(name = "basicScheme")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')") // Users with 'USER' or 'ADMIN' roles can access this method
+	@GetMapping("/policies/{customerNumber}")
+	public ResponseEntity<List<MotorPolicy>> getAllMotorPoliciesByCustomerNumber(@PathVariable int customerNumber) {
+		List<MotorPolicy> allMotorPolicies = motorPolicyService.getAllMotorPoliciesByCustomerNumber(customerNumber);
+		return new ResponseEntity<>(allMotorPolicies, HttpStatus.OK);
 	}
 
 	// Policy Add

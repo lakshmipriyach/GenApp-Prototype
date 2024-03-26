@@ -17,5 +17,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
 	Policy findByCustomernumberAndIssuedateAndExpirydate(int customernumber, Date issuedate, Date expirydate);
 
+	Policy findByPolicynumber(int policynumber);
+
 }
 

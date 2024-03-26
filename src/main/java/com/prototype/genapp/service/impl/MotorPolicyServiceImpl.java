@@ -1,5 +1,6 @@
 package com.prototype.genapp.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +66,43 @@ public class MotorPolicyServiceImpl implements MotorPolicyService {
 
 		return motorPolicy;
 	}
+	
+	@Override
+	public List<MotorPolicy> getAllMotorPoliciesByCustomerNumber(int customerNumber) {
+	    List<MotorPolicy> allMotorPolicies = new ArrayList<>();
+
+	    // Retrieve all policies for the given customer number from the repository
+	    List<Policy> policies = policyRepository.findByCustomernumber(customerNumber);
+
+	    // Iterate through each policy and retrieve its associated motor details
+	    for (Policy policy : policies) {
+	        // Find the motor details by policy number
+	        Motor motor = motorRepository.findByPolicynumber(policy.getPolicynumber());
+	        if (motor != null) {
+	            // Create a MotorPolicy object combining policy and motor details
+	            MotorPolicy motorPolicy = new MotorPolicy();
+	            motorPolicy.setPolicynumber(policy.getPolicynumber());
+	            motorPolicy.setCustomernumber(policy.getCustomernumber());
+	            motorPolicy.setIssuedate(policy.getIssuedate());
+	            motorPolicy.setExpirydate(policy.getExpirydate());
+	            motorPolicy.setCarmake(motor.getMake());
+	            motorPolicy.setCarmodel(motor.getModel());
+	            motorPolicy.setCarvalue(motor.getValue());
+	            motorPolicy.setRegistration(motor.getRegnumber());
+	            motorPolicy.setCarcolour(motor.getColour());
+	            motorPolicy.setCc(motor.getCc());
+	            motorPolicy.setManufacturedate(motor.getYearofmanufacture());
+	            motorPolicy.setPolicypremium(motor.getPremium());
+	            motorPolicy.setNoofaccidents(motor.getAccidents());
+
+	            allMotorPolicies.add(motorPolicy);
+	        }
+	    }
+
+	    return allMotorPolicies;
+	}
+
+
 
 	// Policy Add
 

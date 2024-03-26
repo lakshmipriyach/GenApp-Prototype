@@ -1,5 +1,7 @@
 package com.prototype.genapp.service;
 
+import java.util.List;
+
 import com.prototype.genapp.payload.MotorPolicy;
 
 public interface MotorPolicyService {
@@ -19,5 +21,9 @@ public interface MotorPolicyService {
 	// Policy Update
 
 	MotorPolicy updateMotorPolicy(int policyNumber, int customerNumber, MotorPolicy motorPolicy);
+
+	// Get All Policies
+	
+	List<MotorPolicy> getAllMotorPoliciesByCustomerNumber(int customerNumber);
 	
 }
