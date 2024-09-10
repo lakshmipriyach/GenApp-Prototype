@@ -1,6 +1,13 @@
 version: "3"
 
 services:
+
+  frontend:
+    image: naziyabegum/genappfrontend
+    depends_on:
+      - mysqldb
+    network_mode: "host"
+    
   mysqldb:
     container_name: mysqldb
     image: mysql
@@ -28,6 +35,7 @@ services:
     networks:
       - genapp-mysql-net
     restart: on-failure
-    
+     
+
 networks:
   genapp-mysql-net: 
